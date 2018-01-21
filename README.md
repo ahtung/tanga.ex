@@ -1,6 +1,9 @@
 # Tanga
 
 [![Build Status](https://travis-ci.org/ahtung/tanga.ex.svg?branch=master)](https://travis-ci.org/ahtung/tanga.ex)
+[![Coverage Status](https://coveralls.io/repos/ahtung/tanga.ex/badge.svg?branch=master)](https://coveralls.io/r/ahtung/tanga.ex?branch=master)
+[![Hex.pm version](https://img.shields.io/hexpm/v/tanga.svg?style=flat-square)](https://hex.pm/packages/tanga)
+[![Hex.pm downloads](https://img.shields.io/hexpm/dt/tanga.svg)](https://hex.pm/packages/tanga)
 
 **TODO: Add description**
 
