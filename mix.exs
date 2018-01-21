@@ -8,7 +8,8 @@ defmodule Tanga.Mixfile do
       elixir: "~> 1.3",
       start_permanent: Mix.env == :prod,
       deps: deps(),
-      preferred_cli_env: [espec: :test],
+      preferred_cli_env: [espec: :test, coveralls: :test],
+      test_coverage: [tool: ExCoveralls, test_task: "espec"],
     ]
   end
 
@@ -23,6 +24,7 @@ defmodule Tanga.Mixfile do
   defp deps do
     [
       {:espec, "~> 1.4.6", only: :test},
+      {:excoveralls, "~> 0.8", only: :test},
     ]
   end
 end
