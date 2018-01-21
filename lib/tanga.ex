@@ -4,7 +4,8 @@ defmodule Tanga do
   """
   
   @character_ranges [
-    {'a', 'z'}
+    {'a', 'z'},
+    {'0', '9'}
   ]
   @characters Enum.map(@character_ranges, fn {a, z} ->
                 hd(a)..hd(z)
