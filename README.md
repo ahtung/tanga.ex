@@ -5,7 +5,13 @@
 [![Hex.pm version](https://img.shields.io/hexpm/v/tanga.svg?style=flat-square)](https://hex.pm/packages/tanga)
 [![Hex.pm downloads](https://img.shields.io/hexpm/dt/tanga.svg)](https://hex.pm/packages/tanga)
 
-**TODO: Add description**
+Sexier strings for Elixir
+
+## Usage
+
+```elixir
+"aab" = Tanga.next("aaa")
+```
 
 ## Installation
 
