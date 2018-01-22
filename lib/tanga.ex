@@ -14,6 +14,52 @@ defmodule Tanga do
                 |> List.flatten
 
   @doc """
+  Builds a set of characters from the other_str parameter(s) using the procedure described for String#count. Returns a new string where runs of the same character that occur in this set are replaced by a single character. If no arguments are given, all runs of identical characters are replaced by a single character.
+  """
+  def squeeze(string) do
+    string
+      |> String.graphemes
+      |> squeeze_string
+      |> Enum.join
+  end
+  
+  def squeeze(string, chars) do
+    graphemes = string |> String.graphemes
+    split = chars |> String.split("", trim: true)
+    case split do
+      [from, "-", to] ->
+        range = hd(to_charlist(from))..hd(to_charlist(to))
+          |> Enum.to_list
+          |> to_string
+          |> String.split("", trim: true)
+        squeeze_string(graphemes, range)
+      [char] ->
+        squeeze_string(graphemes, [char])
+    end
+      |> Enum.join
+  end
+
+  defp squeeze_string([h|t], chars) do
+    if h == List.first(t) && Enum.member?(chars, h) do
+      squeeze_string(t, chars)
+    else
+      [h] ++ squeeze_string(t, chars)
+    end
+  end
+  
+  defp squeeze_string(last, chars), do: last
+    
+  defp squeeze_string([h|t]) do
+    if h == List.first(t) do
+      squeeze_string(t)
+    else
+      [h] ++ squeeze_string(t)
+    end
+  end
+  
+  defp squeeze_string(last), do: last
+
+  @doc """
   Returns the successor to str. The successor is calculated by incrementing characters starting from the rightmost alphanumeric (or the rightmost character if there are no alphanumerics) in the string. Incrementing a digit always results in another digit, and incrementing a letter results in another letter of the same case. Incrementing nonalphanumerics uses the underlying character set’s collating sequence.
 
   If the increment generates a “carry,” the character to the left of it is incremented. This process repeats until there is no carry, adding an additional character if necessary.

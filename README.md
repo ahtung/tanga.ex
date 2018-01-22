@@ -10,7 +10,11 @@ Sexier strings for Elixir
 ## Usage
 
 ```elixir
+# next
 "aab" = Tanga.next("aaa")
+
+# squeeze
+"yelow mon" = Tanga.squeeze("yellow moon")
 ```
 
 ## Installation

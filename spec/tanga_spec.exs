@@ -26,4 +26,30 @@ defmodule TangaSpec do
       expect(Tanga.next("***")).to eq("**+")
     end
   end
+  
+  describe "squeeze" do
+    describe "w/o args" do
+      it "returns 'yelow mon' for 'yellow moon'" do
+        expect(Tanga.squeeze("yellow moon")).to eq("yelow mon")
+      end
+      
+      it "returns 'gren mon' for 'green moon'" do
+        expect(Tanga.squeeze("green moon")).to eq("gren mon")
+      end
+      
+      it "returns 'John Doe №8' for 'John    Doe №88'" do
+        expect(Tanga.squeeze("John    Doe №88")).to eq("John Doe №8")
+      end
+    end
+    
+    describe "w/ args" do
+      it "returns ' now is the' for '  now   is  the'" do
+        expect(Tanga.squeeze("  now   is  the", " ")).to eq(" now is the")
+      end
+      
+      it "returns 'puters shot balls' for 'putters shoot balls'" do
+        expect(Tanga.squeeze("putters shoot balls", "m-z")).to eq("puters shot balls")
+      end
+    end
+  end
 end
