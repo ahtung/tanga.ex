@@ -108,4 +108,20 @@ defmodule Tanga do
     String.pad_trailing(string, max(0, rpad) + string_length, chars)
       |> String.pad_leading(char_count, chars)
   end
+  
+  @doc """
+  Centers str in width. If width is greater than the length of str, returns a new String of length width with str centered and padded with padstr; otherwise, returns str.
+  """
+  def swapcase(string) do
+    string
+      |> String.graphemes
+      |> Enum.map(fn(char) ->
+        if char =~ ~r/^\p{Lu}$/u do
+          String.downcase(char)
+        else
+          String.upcase(char)
+        end
+      end)
+      |> Enum.join
+  end
 end
