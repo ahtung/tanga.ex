@@ -92,4 +92,20 @@ defmodule Tanga do
   end
 
   defp next_character(c), do: {c, true}
+  
+  @doc """
+  Centers str in width. If width is greater than the length of str, returns a new String of length width with str centered and padded with padstr; otherwise, returns str.
+  """
+  def center(string, char_count) do
+    center(string, char_count, " ")
+  end
+  
+  def center(string, char_count, chars) do
+    string_length = String.length(string)
+    space = char_count - string_length
+    lpad = round(Float.floor(space / 2))
+    rpad = round(Float.ceil(space / 2))
+    String.pad_trailing(string, max(0, rpad) + string_length, chars)
+      |> String.pad_leading(char_count, chars)
+  end
 end
