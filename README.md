@@ -28,7 +28,7 @@ by adding `tanga` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:tanga, "~> 0.2.0"}
+    {:tanga, "~> 0.3.0"}
   ]
 end
 ```
