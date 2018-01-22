@@ -18,6 +18,9 @@ Sexier strings for Elixir
 
 # center
 "       hello        " = Tanga.center("hello", 20)
+
+# swapcase
+"hELLO" = Tanga.swapcase("Hello")
 ```
 
 ## Installation
