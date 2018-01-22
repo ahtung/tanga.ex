@@ -23,7 +23,24 @@ defmodule Tanga do
       |> Enum.join
   end
   
-  def squeeze(string, chars) do
+  def squeeze(string, chars) when is_list(chars) do
+    string_list = string |> String.graphemes
+    char_list = chars
+      |> Enum.map(&String.graphemes/1)
+      |> Enum.map(&(MapSet.new(&1)))
+      |> Enum.reduce(nil, fn(pieces, acc) ->
+        if acc == nil do
+          MapSet.new(pieces)
+        else
+          MapSet.intersection(acc, pieces)
+        end
+      end)
+      |> MapSet.to_list
+
+    squeeze_string(string_list, char_list) |> Enum.join
+  end
+  
+  def squeeze(string, chars) when is_binary(chars) do
     graphemes = string |> String.graphemes
     split = chars |> String.split("", trim: true)
     case split do
@@ -39,7 +56,7 @@ defmodule Tanga do
       |> Enum.join
   end
 
-  defp squeeze_string([h|t], chars) do
+  defp squeeze_string([h|t], chars) when is_list(chars) do
     if h == List.first(t) && Enum.member?(chars, h) do
       squeeze_string(t, chars)
     else
