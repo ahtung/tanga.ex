@@ -66,14 +66,4 @@ defmodule TangaSpec do
       expect(Tanga.center("hello", 20, "123")).to eq("1231231hello12312312")
     end
   end
-  
-  describe "swapcase" do
-    it "returns 'hELLO' for 'Hello'" do
-      expect(Tanga.swapcase("Hello")).to eq("hELLO")
-    end
-    
-    it "returns 'CyBeR_pUnK11' for 'cYbEr_PuNk11'" do
-      expect(Tanga.swapcase("cYbEr_PuNk11")).to eq("CyBeR_pUnK11")
-    end
-  end
 end
