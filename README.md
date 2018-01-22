@@ -15,6 +15,9 @@ Sexier strings for Elixir
 
 # squeeze
 "yelow mon" = Tanga.squeeze("yellow moon")
+
+# center
+"       hello        " = Tanga.center("hello", 20)
 ```
 
 ## Installation
