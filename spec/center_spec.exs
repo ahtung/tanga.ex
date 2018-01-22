@@ -32,5 +32,35 @@ defmodule CenterSpec do
       expect Tanga.center("||", 12, "12345") |> to(eq "12345||12345")
       expect Tanga.center("||", 13, "12345") |> to(eq "12345||123451")
     end
+    
+    it "pads with whitespace if no padstr is given" do
+      expect Tanga.center("two", 5) |> to(eq " two ")
+      expect Tanga.center("hello", 20) |> to(eq "       hello        ")
+    end
+    
+    it "returns self if it's longer than or as long as the specified length" do
+      expect Tanga.center("", 0) |> to(eq "")
+      expect Tanga.center("", -1) |> to(eq "")
+      expect Tanga.center("hello", 4) |> to(eq "hello")
+      expect Tanga.center("hello", -1) |> to(eq "hello")
+      expect Tanga.center("this", 3) |> to(eq "this")
+      expect Tanga.center("radiology", 8, "-") |> to(eq "radiology")
+    end
+    
+    it "calls Kernel.trunc to convert length to an integer" do
+      expect Tanga.center("_", 3.8, "^") |> to(eq "^_^")
+      expect Tanga.center("_", "3", "o") |> to(eq "o_o")
+    end
+    
+    xit "raises a TypeError when padstr can't be converted to a string" do
+      expect Tanga.center("hello", 20, 100) |> to(raise_exception TypeError)
+      expect Tanga.center("hello", 20, []) |> to(raise_exception TypeError)
+      # expect Tanga.center("hello", 20, mock('x')) |> to(raise_exception TypeError)
+    end
+    
+    xit "raises an ArgumentError if padstr is empty" do
+      expect Tanga.center("hello", 10, "") |> to(raise_exception ArgumentError)
+      expect Tanga.center("hello", 0, "") |> to(raise_exception ArgumentError)
+    end
   end
 end

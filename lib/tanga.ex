@@ -97,10 +97,24 @@ defmodule Tanga do
   Centers str in width. If width is greater than the length of str, returns a new String of length width with str centered and padded with padstr; otherwise, returns str.
   """
   def center(string, char_count) do
-    center(string, char_count, " ")
+    if char_count <= String.length(string) do
+      string
+    else
+      center(string, char_count, " ")
+    end
   end
   
-  def center(string, char_count, chars) do
+  def center(string, char_count, chars) when is_binary(char_count) do
+    int_char_count = String.to_integer(char_count)
+    center(string, int_char_count, chars)
+  end
+  
+  def center(string, char_count, chars) when is_float(char_count) do
+    int_char_count = trunc(char_count)
+    center(string, int_char_count, chars)
+  end
+  
+  def center(string, char_count, chars) when is_integer(char_count) do
     string_length = String.length(string)
     space = char_count - string_length
     lpad = round(Float.floor(space / 2))
