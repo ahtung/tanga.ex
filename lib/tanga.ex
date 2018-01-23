@@ -2,7 +2,7 @@ defmodule Tanga do
   @moduledoc """
   Documentation for Tanga.
   """
-  
+
   @character_ranges [
     {'a', 'z'},
     {'0', '9'}
@@ -15,14 +15,20 @@ defmodule Tanga do
 
   @doc """
   Builds a set of characters from the other_str parameter(s) using the procedure described for String#count. Returns a new string where runs of the same character that occur in this set are replaced by a single character. If no arguments are given, all runs of identical characters are replaced by a single character.
+
+  ## Examples
+
+    iex> Tanga.squeeze("fiiin", "i)
+    "fin"
+
   """
   def squeeze(string) do
     string
       |> String.graphemes
-      |> squeeze_string
+      |> do_squeeze
       |> Enum.join
   end
-  
+
   def squeeze(string, chars) when is_list(chars) do
     string_list = string |> String.graphemes
     char_list = chars
@@ -37,9 +43,9 @@ defmodule Tanga do
       end)
       |> MapSet.to_list
 
-    squeeze_string(string_list, char_list) |> Enum.join
+    do_squeeze(string_list, char_list) |> Enum.join
   end
-  
+
   def squeeze(string, chars) when is_binary(chars) do
     graphemes = string |> String.graphemes
     split = chars |> String.split("", trim: true)
@@ -49,32 +55,32 @@ defmodule Tanga do
           |> Enum.to_list
           |> to_string
           |> String.split("", trim: true)
-        squeeze_string(graphemes, range)
+        do_squeeze(graphemes, range)
       [char] ->
-        squeeze_string(graphemes, [char])
+        do_squeeze(graphemes, [char])
     end
       |> Enum.join
   end
 
-  defp squeeze_string([h|t], chars) when is_list(chars) do
+  defp do_squeeze([h|t], chars) when is_list(chars) do
     if h == List.first(t) && Enum.member?(chars, h) do
-      squeeze_string(t, chars)
+      do_squeeze(t, chars)
     else
-      [h] ++ squeeze_string(t, chars)
+      [h] ++ do_squeeze(t, chars)
     end
   end
-  
-  defp squeeze_string(last, chars), do: last
-    
-  defp squeeze_string([h|t]) do
+
+  defp do_squeeze(last, chars), do: last
+
+  defp do_squeeze([h|t]) do
     if h == List.first(t) do
-      squeeze_string(t)
+      do_squeeze(t)
     else
-      [h] ++ squeeze_string(t)
+      [h] ++ do_squeeze(t)
     end
   end
-  
-  defp squeeze_string(last), do: last
+
+  defp do_squeeze(last), do: last
 
   @doc """
   Returns the successor to str. The successor is calculated by incrementing characters starting from the rightmost alphanumeric (or the rightmost character if there are no alphanumerics) in the string. Incrementing a digit always results in another digit, and incrementing a letter results in another letter of the same case. Incrementing nonalphanumerics uses the underlying character set’s collating sequence.
@@ -86,14 +92,14 @@ defmodule Tanga do
       |> next_string
       |> String.reverse
   end
-  
+
   defp next_string(<<byte, rest::bitstring>>) do
     case next_character(byte) do
       {c, true} -> <<c>> <> next_string(rest)
       {c, false} -> <<c>> <> rest
     end
   end
-  
+
   defp next_character(c) when c in @characters do
     if (c + 1) in @characters do
       {c + 1, false}
@@ -109,14 +115,14 @@ defmodule Tanga do
   end
 
   defp next_character(c), do: {c, true}
-  
+
   @doc """
   Centers str in width. If width is greater than the length of str, returns a new String of length width with str centered and padded with padstr; otherwise, returns str.
   """
   def center(string, char_count) do
     center(string, char_count, " ")
   end
-  
+
   def center(string, char_count, chars) do
     string_length = String.length(string)
     space = char_count - string_length
@@ -125,7 +131,7 @@ defmodule Tanga do
     String.pad_trailing(string, max(0, rpad) + string_length, chars)
       |> String.pad_leading(char_count, chars)
   end
-  
+
   @doc """
   Centers str in width. If width is greater than the length of str, returns a new String of length width with str centered and padded with padstr; otherwise, returns str.
   """
