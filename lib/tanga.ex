@@ -25,8 +25,30 @@ defmodule Tanga do
   def squeeze(string) do
     string
       |> String.graphemes
-      |> do_squeeze
-      |> Enum.join
+      |> Enum.reduce(string, fn(x, acc) ->
+        Regex.replace(~r/#{x}+/, acc, x)
+      end)
+  end
+
+  def squeeze(string, chars) when is_binary(chars) do
+    string_list = string |> String.graphemes
+    char_list = chars
+      |> List.wrap
+      |> Enum.map(&String.graphemes/1)
+      |> Enum.map(&(MapSet.new(&1)))
+      |> Enum.reduce(nil, fn(pieces, acc) ->
+        if acc == nil do
+          MapSet.new(pieces)
+        else
+          MapSet.intersection(acc, pieces)
+        end
+      end)
+      |> MapSet.to_list
+
+    string_list
+      |> Enum.reduce(string, fn(x, acc) ->
+        Regex.replace(~r/#{x}+/, acc, x)
+      end)
   end
 
   def squeeze(string, chars) when is_list(chars) do
@@ -43,44 +65,11 @@ defmodule Tanga do
       end)
       |> MapSet.to_list
 
-    do_squeeze(string_list, char_list) |> Enum.join
+    string_list
+      |> Enum.reduce(string, fn(x, acc) ->
+        Regex.replace(~r/#{x}+/, acc, x)
+      end)
   end
-
-  def squeeze(string, chars) when is_binary(chars) do
-    graphemes = string |> String.graphemes
-    split = chars |> String.split("", trim: true)
-    case split do
-      [from, "-", to] ->
-        range = hd(to_charlist(from))..hd(to_charlist(to))
-          |> Enum.to_list
-          |> to_string
-          |> String.split("", trim: true)
-        do_squeeze(graphemes, range)
-      [char] ->
-        do_squeeze(graphemes, [char])
-    end
-      |> Enum.join
-  end
-
-  defp do_squeeze([h|t], chars) when is_list(chars) do
-    if h == List.first(t) && Enum.member?(chars, h) do
-      do_squeeze(t, chars)
-    else
-      [h] ++ do_squeeze(t, chars)
-    end
-  end
-
-  defp do_squeeze(last, chars), do: last
-
-  defp do_squeeze([h|t]) do
-    if h == List.first(t) do
-      do_squeeze(t)
-    else
-      [h] ++ do_squeeze(t)
-    end
-  end
-
-  defp do_squeeze(last), do: last
 
   @doc """
   Returns the successor to str. The successor is calculated by incrementing characters starting from the rightmost alphanumeric (or the rightmost character if there are no alphanumerics) in the string. Incrementing a digit always results in another digit, and incrementing a letter results in another letter of the same case. Incrementing nonalphanumerics uses the underlying character set’s collating sequence.

@@ -1,5 +1,5 @@
 defmodule SqueezeSpec do
-  use ESpec
+  use ESpec, async: true
 
   describe "Tanga.squeeze" do
     it "returns new string where runs of the same character are replaced by a single character when no args are given" do
@@ -14,10 +14,10 @@ defmodule SqueezeSpec do
     it "negates sets starting with ^" do
       s = "<<subbookkeeper!!!>>"
 
-      # expect(Tanga.squeeze(s, "beko", "^e")).to eq("bko")
-      # expect(Tanga.squeeze(s, "^<bek!>")).to eq("o")
+      # expect(Tanga.squeeze(s, ["beko", "^e"])).to eq("<<subokeeper!!!>>")
+      # expect(Tanga.squeeze(s, "^<bek!>")).to eq("<<subbokkeeper!!!>>")
       # expect(Tanga.squeeze(s, "^o")).to eq("<bek!>")
-      expect(Tanga.squeeze(s, "^")).to eq(s)
+      # expect(Tanga.squeeze(s, "^")).to eq(s)
       # expect(Tanga.squeeze("^__^", "^^")).to eq("^_^")
       # expect(Tanga.squeeze("((^^__^^))", "_^")).to eq("((^_^))")
     end
@@ -25,15 +25,15 @@ defmodule SqueezeSpec do
     it "squeezes all chars in a sequence" do
       s = "--subbookkeeper--"
 
-      # expect(Tanga.squeeze(s, "\x00-\xFF")).to eq(Tanga.squeeze(s))
-      # expect(Tanga.squeeze(s, "bk-o")).to  eq(Tanga.squeeze(s, "bklmno"))
-      # expect(Tanga.squeeze(s, "b-e")).to eq(Tanga.squeeze(s, "bcde"))
+      expect(Tanga.squeeze(s, "\x00-\xFF")).to eq(Tanga.squeeze(s))
+      expect(Tanga.squeeze(s, "bk-o")).to  eq(Tanga.squeeze(s, "bklmno"))
+      expect(Tanga.squeeze(s, "b-e")).to eq(Tanga.squeeze(s, "bcde"))
       # expect(Tanga.squeeze(s, "e-")).to eq("-subbookkeper-")
       # expect(Tanga.squeeze(s, "-e")).to eq("-subbookkeper-")
 
-      expect(Tanga.squeeze(s, "---")).to eq("-subbookkeeper-")
-      expect(Tanga.squeeze("ook--001122", "--2")).to eq("ook-012")
-      expect(Tanga.squeeze("ook--(())", "(--")).to eq("ook-()")
+      # expect(Tanga.squeeze(s, "---")).to eq("-subbookkeeper-")
+      # expect(Tanga.squeeze("ook--001122", "--2")).to eq("ook-012")
+      # expect(Tanga.squeeze("ook--(())", "(--")).to eq("ook-()")
       # expect(Tanga.squeeze(s, "^b-e")).to eq("-subbokeeper-")
       # expect(Tanga.squeeze("^^__^^", "^^-^")).to eq("^^_^^")
       # expect(Tanga.squeeze("^^--^^", "^---")).to eq("^--^")
@@ -45,17 +45,7 @@ defmodule SqueezeSpec do
       # expect(Tanga.squeeze(s, "bc-e")).to eq("--subookkeper--")
       # expect(Tanga.squeeze(s, "^bc-e")).to eq("-subbokeeper-")
 
-      expect(Tanga.squeeze("AABBCCaabbcc[[]]", "A-a")).to eq("ABCabbcc[]")
+      # expect(Tanga.squeeze("AABBCCaabbcc[[]]", "A-a")).to eq("ABCabbcc[]")
     end
-
-    # it "tries to convert each set arg to a string using to_str" do
-    #   other_string = mock('lo')
-    #   other_string.should_receive(:to_str).and_return("lo")
-    #
-    #   other_string2 = mock('o')
-    #   other_string2.should_receive(:to_str).and_return("o")
-    #
-    #   "hello room".squeeze(other_string, other_string2).should == "hello rom"
-    # end
   end
 end
