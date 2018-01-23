@@ -3,6 +3,8 @@ defmodule Tanga do
   Documentation for Tanga.
   """
 
+  @type t :: binary
+
   @character_ranges [
     {'a', 'z'},
     {'0', '9'}
@@ -22,36 +24,18 @@ defmodule Tanga do
     "fin"
 
   """
-  def squeeze(string) do
-    string
-      |> String.graphemes
-      |> Enum.reduce(string, fn(x, acc) ->
-        Regex.replace(~r/#{x}+/, acc, x)
-      end)
-  end
+  @spec squeeze(t, t) :: t
+  def squeeze(string, chars \\ ".")
 
   def squeeze(string, chars) when is_binary(chars) do
-    string_list = string |> String.graphemes
-    char_list = chars
-      |> List.wrap
-      |> Enum.map(&String.graphemes/1)
-      |> Enum.map(&(MapSet.new(&1)))
-      |> Enum.reduce(nil, fn(pieces, acc) ->
-        if acc == nil do
-          MapSet.new(pieces)
-        else
-          MapSet.intersection(acc, pieces)
-        end
-      end)
-      |> MapSet.to_list
-
-    string_list
-      |> Enum.reduce(string, fn(x, acc) ->
-        Regex.replace(~r/#{x}+/, acc, x)
-      end)
+    do_squeeze(string, List.wrap(chars))
   end
 
   def squeeze(string, chars) when is_list(chars) do
+    do_squeeze(string, chars)
+  end
+
+  defp do_squeeze(string, chars) do
     string_list = string |> String.graphemes
     char_list = chars
       |> Enum.map(&String.graphemes/1)
