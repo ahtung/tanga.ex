@@ -1,5 +1,5 @@
 defmodule CenterSpec do
-  use ESpec
+  use ESpec, async: true
 
   describe "" do
     it "center/3" do
