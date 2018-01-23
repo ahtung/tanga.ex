@@ -2,9 +2,9 @@ defmodule Tanga do
   @moduledoc """
   Documentation for Tanga.
   """
-  
+
   @type t :: binary
-  
+
   @character_ranges [
     {'a', 'z'},
     {'0', '9'}
@@ -24,7 +24,7 @@ defmodule Tanga do
       |> squeeze_string
       |> Enum.join
   end
-  
+
   def squeeze(string, chars) do
     graphemes = string |> String.graphemes
     split = chars |> String.split("", trim: true)
@@ -48,9 +48,9 @@ defmodule Tanga do
       [h] ++ squeeze_string(t, chars)
     end
   end
-  
+
   defp squeeze_string(last, chars), do: last
-    
+
   defp squeeze_string([h|t]) do
     if h == List.first(t) do
       squeeze_string(t)
@@ -58,7 +58,7 @@ defmodule Tanga do
       [h] ++ squeeze_string(t)
     end
   end
-  
+
   defp squeeze_string(last), do: last
 
   @doc """
@@ -71,14 +71,14 @@ defmodule Tanga do
       |> next_string
       |> String.reverse
   end
-  
+
   defp next_string(<<byte, rest::bitstring>>) do
     case next_character(byte) do
       {c, true} -> <<c>> <> next_string(rest)
       {c, false} -> <<c>> <> rest
     end
   end
-  
+
   defp next_character(c) when c in @characters do
     if (c + 1) in @characters do
       {c + 1, false}
@@ -94,37 +94,46 @@ defmodule Tanga do
   end
 
   defp next_character(c), do: {c, true}
-  
+
   @doc """
   Centers str in width. If width is greater than the length of str, returns a new String of length width with str centered and padded with padstr; otherwise, returns str.
+
+  ## Examples
+
+    iex> Tanga.center("fin", 9, "~")
+    "~~~fin~~~"
+
   """
-  def center(string, char_count) do
-    if char_count <= String.length(string) do
-      string
-    else
-      center(string, char_count, " ")
-    end
-  end
-  
+  @spec center(t, integer, t) :: t
+  def center(string, char_count, chars \\ " ")
+
   def center(string, char_count, chars) when is_binary(char_count) do
     int_char_count = String.to_integer(char_count)
     center(string, int_char_count, chars)
   end
-  
+
   def center(string, char_count, chars) when is_float(char_count) do
     int_char_count = trunc(char_count)
     center(string, int_char_count, chars)
   end
-  
+
   def center(string, char_count, chars) when is_integer(char_count) do
-    string_length = String.length(string)
-    space = char_count - string_length
-    lpad = round(Float.floor(space / 2))
-    rpad = round(Float.ceil(space / 2))
-    String.pad_trailing(string, max(0, rpad) + string_length, chars)
-      |> String.pad_leading(char_count, chars)
+    do_center(string, char_count, chars)
   end
-  
+
+  defp do_center(string, char_count, chars) do
+    string_length = String.length(string)
+    if char_count <= string_length do
+      string
+    else
+      space = char_count - string_length
+      lpad = round(Float.floor(space / 2))
+      rpad = round(Float.ceil(space / 2))
+      String.pad_trailing(string, max(0, rpad) + string_length, chars)
+        |> String.pad_leading(char_count, chars)
+    end
+  end
+
   @doc """
   Inverts all characters in the given string to uppercase/lowercase accordingly
 
