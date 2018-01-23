@@ -3,6 +3,8 @@ defmodule Tanga do
   Documentation for Tanga.
   """
   
+  @type t :: binary
+  
   @character_ranges [
     {'a', 'z'},
     {'0', '9'}
@@ -110,17 +112,30 @@ defmodule Tanga do
   end
   
   @doc """
-  Centers str in width. If width is greater than the length of str, returns a new String of length width with str centered and padded with padstr; otherwise, returns str.
+  Inverts all characters in the given string to uppercase/lowercase accordingly
+
+  ## Examples
+
+      iex> Tanga.swapcase("abcd")
+      "ABCD"
+
+      iex> Tanga.swapcase("ab 123 xpto")
+      "AB 123 XPTO"
+
+      iex> Tanga.swapcase("olá")
+      "OLÁ"
+
   """
-  def swapcase(string) do
+  @spec swapcase(t) :: t
+  def swapcase(string)
+
+  def swapcase(string) when is_binary(string) do
     string
       |> String.graphemes
       |> Enum.map(fn(char) ->
-        if char =~ ~r/^\p{Lu}$/u do
-          String.downcase(char)
-        else
-          String.upcase(char)
-        end
+        if char =~ ~r/^\p{Lu}$/u,
+          do: String.downcase(char),
+          else: String.upcase(char)
       end)
       |> Enum.join
   end

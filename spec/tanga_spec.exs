@@ -1,5 +1,6 @@
 defmodule TangaSpec do
   use ESpec
+  doctest Tanga
 
   describe "next" do
     it "returns 'abce' for 'abcd'" do
