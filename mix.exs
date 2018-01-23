@@ -4,7 +4,7 @@ defmodule Tanga.Mixfile do
   def project do
     [
       app: :tanga,
-      version: "0.4.0",
+      version: "0.5.0",
       elixir: "~> 1.3",
       start_permanent: Mix.env == :prod,
       deps: deps(),
@@ -30,7 +30,7 @@ defmodule Tanga.Mixfile do
       {:ex_doc, ">= 0.0.0", only: :dev},
     ]
   end
-  
+
   # Package Information
   defp package do
     [
