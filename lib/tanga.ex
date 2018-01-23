@@ -116,14 +116,14 @@ defmodule Tanga do
 
   ## Examples
 
-      iex> Tanga.swapcase("abcd")
-      "ABCD"
+      iex> Tanga.swapcase("aBcD")
+      "AbCd"
 
-      iex> Tanga.swapcase("ab 123 xpto")
-      "AB 123 XPTO"
+      iex> Tanga.swapcase("aB 123 xPTo")
+      "Ab 123 XptO"
 
-      iex> Tanga.swapcase("olá")
-      "OLÁ"
+      iex> Tanga.swapcase("oLá")
+      "OlÁ"
 
   """
   @spec swapcase(t) :: t
