@@ -1,5 +1,5 @@
 defmodule SwapcaseSpec do
-  use ESpec
+  use ESpec, async: true
 
   describe "" do
     it "swapcase/1" do
