@@ -51,16 +51,5 @@ defmodule CenterSpec do
       expect Tanga.center("_", 3.8, "^") |> to(eq "^_^")
       expect Tanga.center("_", "3", "o") |> to(eq "o_o")
     end
-    
-    xit "raises a TypeError when padstr can't be converted to a string" do
-      expect Tanga.center("hello", 20, 100) |> to(raise_exception TypeError)
-      expect Tanga.center("hello", 20, []) |> to(raise_exception TypeError)
-      # expect Tanga.center("hello", 20, mock('x')) |> to(raise_exception TypeError)
-    end
-    
-    xit "raises an ArgumentError if padstr is empty" do
-      expect Tanga.center("hello", 10, "") |> to(raise_exception ArgumentError)
-      expect Tanga.center("hello", 0, "") |> to(raise_exception ArgumentError)
-    end
   end
 end
