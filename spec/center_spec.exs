@@ -36,6 +36,8 @@ defmodule CenterSpec do
     it "center/2" do
       expect Tanga.center("two", 5) |> to(eq " two ")
       expect Tanga.center("hello", 20) |> to(eq "       hello        ")
+      expect Tanga.center("one", "5") |> to(eq " one ")
+      expect Tanga.center("six", 5.4) |> to(eq " six ")
     end
 
     it "center/2,3 with a string longer than or as long as the specified length" do
