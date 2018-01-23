@@ -53,18 +53,4 @@ defmodule TangaSpec do
       end
     end
   end
-  
-  describe "center" do
-    it "returns 'hello' for 'hello'" do
-      expect(Tanga.center("hello", 4)).to eq("hello")
-    end
-    
-    it "returns 'hello' for '       hello        '" do
-      expect(Tanga.center("hello", 20)).to eq("       hello        ")
-    end
-    
-    it "returns 'hello' for '       hello        '" do
-      expect(Tanga.center("hello", 20, "123")).to eq("1231231hello12312312")
-    end
-  end
 end
