@@ -17,7 +17,18 @@ defmodule Tanga do
 
   @doc """
   Builds a set of characters from the other_str parameter(s) using the procedure described for String#count. Returns a new string where runs of the same character that occur in this set are replaced by a single character. If no arguments are given, all runs of identical characters are replaced by a single character.
+
+  ## Examples
+
+      iex> Tanga.squeeze("aaa")
+      "a"
+
+      iex> Tanga.squeeze("baaabaaa", "a")
+      "baba"
+
   """
+  @spec squeeze(t) :: t
+  @spec squeeze(t, t) :: t
   def squeeze(string) do
     string
       |> String.graphemes
