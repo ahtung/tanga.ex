@@ -1,6 +1,6 @@
 defmodule Tanga do
   @moduledoc """
-  Documentation for Tanga.
+  Tanga is a collection of string helpers similar to those that can be found in Ruby.
   """
 
   @type t :: binary
