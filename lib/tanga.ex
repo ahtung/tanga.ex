@@ -20,8 +20,8 @@ defmodule Tanga do
 
   ## Examples
 
-    iex> Tanga.squeeze("fiiin", "i)
-    "fin"
+      iex> Tanga.squeeze("fiiin", "i)
+      "fin"
 
   """
   @spec squeeze(t, t) :: t
