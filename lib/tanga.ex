@@ -26,51 +26,25 @@ defmodule Tanga do
       iex> Tanga.squeeze("baaabaaa", "a")
       "baba"
 
+      iex> Tanga.squeeze("bbaabbaa", ["a", "b"])
+      "baba"
+
   """
   @spec squeeze(t) :: t
   @spec squeeze(t, t) :: t
+  @spec squeeze(t, list) :: t
   def squeeze(string) do
-    string
-      |> String.graphemes
-      |> squeeze_string
-      |> Enum.join
+    Regex.replace(~r/(.)\1+/, string, "\\1")
   end
 
-  def squeeze(string, chars) do
-    graphemes = string |> String.graphemes
-    split = chars |> String.split("", trim: true)
-    case split do
-      [from, "-", to] ->
-        range = hd(to_charlist(from))..hd(to_charlist(to))
-          |> Enum.to_list
-          |> to_string
-          |> String.split("", trim: true)
-        squeeze_string(graphemes, range)
-      [char] ->
-        squeeze_string(graphemes, [char])
-    end
-      |> Enum.join
+  def squeeze(string, chars) when is_binary(chars) do
+    Regex.replace(~r/(|#{chars}|)\1+/, string, "\\1")
   end
 
-  defp squeeze_string([h|t], chars) do
-    if h == List.first(t) && Enum.member?(chars, h) do
-      squeeze_string(t, chars)
-    else
-      [h] ++ squeeze_string(t, chars)
-    end
+  def squeeze(string, chars) when is_list(chars) do
+    chars_str = Enum.join(chars, "|")
+    Regex.replace(~r/([#{chars_str}])\1+/, string, "\\1")
   end
-
-  defp squeeze_string(last, chars), do: last
-
-  defp squeeze_string([h|t]) do
-    if h == List.first(t) do
-      squeeze_string(t)
-    else
-      [h] ++ squeeze_string(t)
-    end
-  end
-
-  defp squeeze_string(last), do: last
 
   @doc """
   Returns the successor to str. The successor is calculated by incrementing characters starting from the rightmost alphanumeric (or the rightmost character if there are no alphanumerics) in the string. Incrementing a digit always results in another digit, and incrementing a letter results in another letter of the same case. Incrementing nonalphanumerics uses the underlying character set’s collating sequence.
