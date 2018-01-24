@@ -4,16 +4,9 @@ defmodule Tanga do
   """
 
   @type t :: binary
-
-  @character_ranges [
-    {'a', 'z'},
-    {'0', '9'}
-  ]
-  @characters Enum.map(@character_ranges, fn {a, z} ->
-                hd(a)..hd(z)
-                  |> Enum.to_list
-              end)
-                |> List.flatten
+  @digits hd('0')..hd('9') |> Enum.to_list
+  @uppercase_characters hd('A')..hd('A') |> Enum.to_list
+  @lowercase_characters hd('a')..hd('z') |> Enum.to_list
 
   @doc """
   Builds a set of characters from the other_str parameter(s) using the procedure described for String#count. Returns a new string where runs of the same character that occur in this set are replaced by a single character. If no arguments are given, all runs of identical characters are replaced by a single character.
@@ -75,16 +68,38 @@ defmodule Tanga do
     end
   end
 
-  defp next_character(c) when c in @characters do
-    if (c + 1) in @characters do
+  defp next_character(c) when c in @digits do
+    if (c + 1) in @digits do
       {c + 1, false}
     else
-      index = Enum.find_index(@characters, &(&1 == c))
+      {hd(@digits), true}
+    end
+  end
 
-      if c = Enum.at(@characters, index + 1) do
+  defp next_character(c) when c in @uppercase_characters do
+    if (c + 1) in @uppercase_characters do
+      {c + 1, false}
+    else
+      index = Enum.find_index(@uppercase_characters, &(&1 == c))
+
+      if c = Enum.at(@uppercase_characters, index + 1) do
         {c, false}
       else
-        {hd(@characters), true}
+        {hd(@uppercase_characters), true}
+      end
+    end
+  end
+
+  defp next_character(c) when c in @lowercase_characters do
+    if (c + 1) in @lowercase_characters do
+      {c + 1, false}
+    else
+      index = Enum.find_index(@lowercase_characters, &(&1 == c))
+
+      if c = Enum.at(@lowercase_characters, index + 1) do
+        {c, false}
+      else
+        {hd(@lowercase_characters), true}
       end
     end
   end
