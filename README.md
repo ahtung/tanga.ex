@@ -36,7 +36,7 @@ def deps do
 end
 ```
 
-### Roadmap
+## Roadmap
 
 - [x] Swapcase
 - [ ] Center
