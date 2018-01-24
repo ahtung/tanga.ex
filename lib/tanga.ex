@@ -100,21 +100,23 @@ defmodule Tanga do
 
   ## Examples
 
-    iex> Tanga.center("fin", 9, "~")
-    "~~~fin~~~"
+      iex> Tanga.center("fin", 9, "~")
+      "~~~fin~~~"
 
   """
+  @spec center(t, t, t) :: t
+  @spec center(t, float, t) :: t
   @spec center(t, integer, t) :: t
   def center(string, char_count, chars \\ " ")
 
   def center(string, char_count, chars) when is_binary(char_count) do
     int_char_count = String.to_integer(char_count)
-    center(string, int_char_count, chars)
+    do_center(string, int_char_count, chars)
   end
 
   def center(string, char_count, chars) when is_float(char_count) do
     int_char_count = trunc(char_count)
-    center(string, int_char_count, chars)
+    do_center(string, int_char_count, chars)
   end
 
   def center(string, char_count, chars) when is_integer(char_count) do

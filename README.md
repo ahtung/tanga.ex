@@ -39,7 +39,7 @@ end
 ## Roadmap
 
 - [x] Swapcase
-- [ ] Center
+- [x] Center
 - [ ] Next
 - [ ] Squeeze
 
