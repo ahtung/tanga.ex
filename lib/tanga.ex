@@ -65,7 +65,17 @@ defmodule Tanga do
   Returns the successor to str. The successor is calculated by incrementing characters starting from the rightmost alphanumeric (or the rightmost character if there are no alphanumerics) in the string. Incrementing a digit always results in another digit, and incrementing a letter results in another letter of the same case. Incrementing nonalphanumerics uses the underlying character set’s collating sequence.
 
   If the increment generates a “carry,” the character to the left of it is incremented. This process repeats until there is no carry, adding an additional character if necessary.
+
+  ## Examples
+
+      iex> Tanga.next("aaa")
+      "aab"
+
+      iex> Tanga.next("12")
+      "13"
+
   """
+  @spec next(t) :: t
   def next(string) do
     String.reverse(string)
       |> next_string
