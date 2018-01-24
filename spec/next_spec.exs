@@ -1,12 +1,12 @@
 defmodule NextSpec do
-  use ESpec
+  use ESpec, async: true
 
-  describe "Tanga.next" do
-    xit "returns an empty string for empty strings" do
+  describe "" do
+    it "next/1" do
       expect Tanga.next("") |> to(eq "")
     end
     
-    it "returns the successor by increasing the rightmost alphanumeric (digit => digit, letter => letter with same case)" do
+    it "next/1 with ..." do
       expect Tanga.next("abcd") |> to(eq "abce")
       expect Tanga.next("THX1138") |> to(eq "THX1139")
 
@@ -14,7 +14,7 @@ defmodule NextSpec do
       # expect Tanga.next("==A??") |> to(eq "==B??")
     end
     
-    xit "increases non-alphanumerics (via ascii rules) if there are no alphanumerics" do
+    xit "next/1 with non-alphanumerics" do
       expect Tanga.next("***") |> to(eq "**+")
       expect Tanga.next("**`") |> to(eq "**a")
     end

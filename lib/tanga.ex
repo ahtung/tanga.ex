@@ -61,6 +61,7 @@ defmodule Tanga do
 
   """
   @spec next(t) :: t
+  def next(string) when string == "", do: ""
   def next(string) do
     String.reverse(string)
       |> next_string
