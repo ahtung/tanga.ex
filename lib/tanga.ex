@@ -4,7 +4,7 @@ defmodule Tanga do
   """
 
   @type t :: binary
-  @digits hd('0')..hd('9') |> Enum.to_list
+  @digits hd('0')..hd('9') |> Enum.to_list |> IO.inspect
   @uppercase_characters hd('A')..hd('A') |> Enum.to_list
   @lowercase_characters hd('a')..hd('z') |> Enum.to_list
 
@@ -57,10 +57,28 @@ defmodule Tanga do
   def next(string) when string == "", do: ""
   def next(string) do
     String.reverse(string)
-      |> next_string
-      |> String.reverse
+    |> next_string
+    |> String.reverse
   end
 
+  @doc """
+  Is an alias to next/1
+
+  ## Examples
+
+      iex> Tanga.succ("9")
+      "10"
+
+      iex> Tanga.succ("zz")
+      "aaa"
+
+  """
+  @spec succ(t) :: t
+  defdelegate succ(string), to: __MODULE__, as: :next
+
+  defp next_string("z"), do: "aa"
+  defp next_string("Z"), do: "AA"
+  defp next_string("9"), do: "01"
   defp next_string(<<byte, rest::bitstring>>) do
     case next_character(byte) do
       {c, true} -> <<c>> <> next_string(rest)
@@ -69,42 +87,32 @@ defmodule Tanga do
   end
 
   defp next_character(c) when c in @digits do
-    if (c + 1) in @digits do
+    if c + 1 in @digits do
       {c + 1, false}
     else
       {hd(@digits), true}
     end
   end
 
-  defp next_character(c) when c in @uppercase_characters do
-    if (c + 1) in @uppercase_characters do
-      {c + 1, false}
-    else
-      index = Enum.find_index(@uppercase_characters, &(&1 == c))
-
-      if c = Enum.at(@uppercase_characters, index + 1) do
-        {c, false}
-      else
-        {hd(@uppercase_characters), true}
-      end
-    end
-  end
-
   defp next_character(c) when c in @lowercase_characters do
-    if (c + 1) in @lowercase_characters do
+    if c + 1 in @lowercase_characters do
       {c + 1, false}
     else
-      index = Enum.find_index(@lowercase_characters, &(&1 == c))
-
-      if c = Enum.at(@lowercase_characters, index + 1) do
-        {c, false}
-      else
-        {hd(@lowercase_characters), true}
-      end
+      {hd(@lowercase_characters), true}
     end
   end
 
-  defp next_character(c), do: {c, true}
+  defp next_character(c) when c in @uppercase_characters do
+    if c + 1 in @uppercase_characters do
+      {c + 1, false}
+    else
+      {hd(@uppercase_characters), true}
+    end
+  end
+
+  defp next_character(c) do
+    {c, true}
+  end
 
   @doc """
   Centers str in width. If width is greater than the length of str, returns a new String of length width with str centered and padded with padstr; otherwise, returns str.
@@ -143,7 +151,7 @@ defmodule Tanga do
       lpad = round(Float.floor(space / 2))
       rpad = round(Float.ceil(space / 2))
       String.pad_trailing(string, max(0, rpad) + string_length, chars)
-        |> String.pad_leading(char_count, chars)
+      |> String.pad_leading(char_count, chars)
     end
   end
 
@@ -165,12 +173,12 @@ defmodule Tanga do
   @spec swapcase(t) :: t
   def swapcase(string) when is_binary(string) do
     string
-      |> String.graphemes
-      |> Enum.map(fn(char) ->
-        if char =~ ~r/^\p{Lu}$/u,
-          do: String.downcase(char),
-          else: String.upcase(char)
-      end)
-      |> Enum.join
+    |> String.graphemes
+    |> Enum.map(fn(char) ->
+      if char =~ ~r/^\p{Lu}$/u,
+        do: String.downcase(char),
+        else: String.upcase(char)
+    end)
+    |> Enum.join
   end
 end
